@@ -38,11 +38,15 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "expo": {
+      "userInterfaceStyle": "automatic"
     }
   }
 }
