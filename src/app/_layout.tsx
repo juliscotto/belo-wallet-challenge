@@ -1,4 +1,3 @@
-import { QueryProvider } from "@/src/app/providers/QueryProvider";
 import {
   DarkTheme,
   DefaultTheme,
@@ -6,21 +5,28 @@ import {
 } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-
-import { useAppTheme } from "./../core/theme/useAppTheme";
-
 import "../core/i18n/i18n";
+
+import { QueryProvider } from "../app/providers/QueryProvider";
+import { useAppTheme } from "../core/theme/useAppTheme";
 
 export default function RootLayout() {
   const { isDark } = useAppTheme();
+
+  const backgroundColor = isDark ? "#0a0a0a" : "#ffffff";
+
   return (
     <QueryProvider>
       <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
-        <StatusBar style="auto" />
+        <StatusBar style={isDark ? "light" : "dark"} />
 
         <Stack
           screenOptions={{
             headerShown: false,
+            animation: "default",
+            contentStyle: {
+              backgroundColor,
+            },
           }}
         />
       </ThemeProvider>

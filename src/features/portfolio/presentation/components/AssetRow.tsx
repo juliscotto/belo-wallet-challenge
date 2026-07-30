@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { router } from "expo-router";
+import { Pressable, Text, View } from "react-native";
 import tw from "twrnc";
 
 import { formatUsd } from "../../../../core/formatting/formatCurrency";
@@ -41,7 +42,7 @@ export function AssetRow({
         : tw`text-red-500`;
 
   return (
-    <View
+    <Pressable
       style={[
         tw`flex-row items-center justify-between border-b py-4`,
         styles.border,
@@ -50,6 +51,14 @@ export function AssetRow({
       accessibilityLabel={`${asset.name}, balance ${balance} ${symbol}, value ${formatUsd(
         holdingValueUsd,
       )}`}
+      onPress={() => {
+        router.push({
+          pathname: "/coin/[symbol]",
+          params: {
+            symbol,
+          },
+        });
+      }}
     >
       <View style={tw`flex-1`}>
         <Text style={[tw`text-base font-semibold`, styles.primaryText]}>
@@ -72,6 +81,6 @@ export function AssetRow({
 
         <Text style={[tw`mt-1 text-sm`, changeStyle]}>{formattedChange}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
