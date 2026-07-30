@@ -56,4 +56,26 @@ export const es = {
       invalidPrice: "La información del precio no está disponible",
     },
   },
+  notifications: {
+    title: "Notificaciones",
+    open: "Abrir notificaciones",
+
+    unreadCount: "{{count}} notificación sin leer",
+    unreadCount_other: "{{count}} notificaciones sin leer",
+
+    markAllAsRead: "Marcar todas como leídas",
+
+    emptyTitle: "Todavía no hay notificaciones",
+    emptyDescription: "Las notificaciones de tu actividad aparecerán acá.",
+
+    swapCompleted: {
+      title: "Intercambio completado",
+      description:
+        "Intercambiaste {{fromAmount}} {{fromSymbol}} por {{toAmount}} {{toSymbol}}.",
+    },
+
+    general: {
+      title: "Notificación",
+    },
+  },
 } as const;

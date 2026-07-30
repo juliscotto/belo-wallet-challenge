@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeStyles } from "../../../core/theme/useThemeStyles";
 import { AssetSymbol } from "../../market/domain/entities/Asset";
 import { useAssetPrices } from "../../market/presentation/hooks/useAssetPrices";
+import { NotificationButton } from "../../notifications/presentation/components/NotificationButton";
 import { calculatePortfolioTotal } from "../domain/useCases/calculatePortfolioTotal";
 import { usePortfolioStore } from "../store/portfolioStore";
 import { AssetRow } from "./components/AssetRow";
@@ -66,9 +67,13 @@ export function HomeScreen() {
         }}
         ListHeaderComponent={
           <View>
-            <Text style={[tw`mb-5 text-2xl font-bold`, styles.primaryText]}>
-              {t("portfolio.title")}
-            </Text>
+            <View style={tw`mb-5 flex-row items-center justify-between`}>
+              <Text style={[tw`text-2xl font-bold`, styles.primaryText]}>
+                {t("portfolio.title")}
+              </Text>
+
+              <NotificationButton />
+            </View>
 
             <BalanceCard
               totalBalanceUsd={totalBalanceUsd}

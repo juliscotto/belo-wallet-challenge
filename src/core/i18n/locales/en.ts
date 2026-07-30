@@ -56,4 +56,26 @@ export const en = {
       invalidPrice: "Price information is unavailable",
     },
   },
+  notifications: {
+    title: "Notifications",
+    open: "Open notifications",
+
+    unreadCount: "{{count}} unread notification",
+    unreadCount_other: "{{count}} unread notifications",
+
+    markAllAsRead: "Mark all as read",
+
+    emptyTitle: "No notifications yet",
+    emptyDescription: "Your activity notifications will appear here.",
+
+    swapCompleted: {
+      title: "Swap completed",
+      description:
+        "You exchanged {{fromAmount}} {{fromSymbol}} for {{toAmount}} {{toSymbol}}.",
+    },
+
+    general: {
+      title: "Notification",
+    },
+  },
 } as const;

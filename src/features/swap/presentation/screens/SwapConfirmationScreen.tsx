@@ -8,6 +8,9 @@ import { formatUsd } from "../../../../core/formatting/formatCurrency";
 import { useThemeStyles } from "../../../../core/theme/useThemeStyles";
 import { usePortfolioStore } from "../../../portfolio/store/portfolioStore";
 
+import { createNotificationId } from "../../../notifications/domain/createNotificationId";
+import { useNotificationStore } from "../../../notifications/store/notificationStore";
+
 import { useSwapStore } from "../../store/swapStore";
 
 export function SwapConfirmationScreen() {
@@ -21,6 +24,10 @@ export function SwapConfirmationScreen() {
   const clearPendingQuote = useSwapStore((state) => state.clearPendingQuote);
 
   const swapBalances = usePortfolioStore((state) => state.swapBalances);
+
+  const addNotification = useNotificationStore(
+    (state) => state.addNotification,
+  );
 
   if (!quote) {
     return (
@@ -69,6 +76,19 @@ export function SwapConfirmationScreen() {
 
       return;
     }
+
+    addNotification({
+      id: createNotificationId(),
+      type: "SWAP_COMPLETED",
+      createdAt: new Date().toISOString(),
+      isRead: false,
+      data: {
+        fromSymbol: quote.fromSymbol,
+        toSymbol: quote.toSymbol,
+        fromAmount: quote.fromAmount,
+        toAmount: quote.toAmount,
+      },
+    });
 
     completeSwap(quote);
 
