@@ -23,6 +23,9 @@ export function NotificationRow({
       case "SWAP_COMPLETED":
         return t("notifications.swapCompleted.title");
 
+      case "PRICE_ALERT_TRIGGERED":
+        return t("notifications.priceAlert.title");
+
       case "GENERAL":
         return t("notifications.general.title");
     }
@@ -40,6 +43,30 @@ export function NotificationRow({
 
       case "GENERAL":
         return t(notification.data.messageKey);
+
+      case "PRICE_ALERT_TRIGGERED":
+        return t(
+          notification.data.condition === "ABOVE"
+            ? "notifications.priceAlert.aboveDescription"
+            : "notifications.priceAlert.belowDescription",
+          {
+            symbol: notification.data.symbol,
+
+            targetPrice: notification.data.targetPriceUsd.toLocaleString(
+              undefined,
+              {
+                maximumFractionDigits: 2,
+              },
+            ),
+
+            currentPrice: notification.data.currentPriceUsd.toLocaleString(
+              undefined,
+              {
+                maximumFractionDigits: 2,
+              },
+            ),
+          },
+        );
     }
   }
 
@@ -51,6 +78,21 @@ export function NotificationRow({
     },
   ).format(new Date(notification.createdAt));
 
+  function getIconName():
+    | "swap-horizontal"
+    | "trending-up"
+    | "notifications-outline" {
+    switch (notification.type) {
+      case "SWAP_COMPLETED":
+        return "swap-horizontal";
+
+      case "PRICE_ALERT_TRIGGERED":
+        return "trending-up";
+
+      case "GENERAL":
+        return "notifications-outline";
+    }
+  }
   return (
     <Pressable
       style={[
@@ -83,7 +125,7 @@ export function NotificationRow({
           bg-blue-600
         `}
       >
-        <Ionicons name="swap-horizontal" size={24} color="#ffffff" />
+        <Ionicons name={getIconName()} size={24} color="#ffffff" />
       </View>
 
       <View style={tw`flex-1`}>

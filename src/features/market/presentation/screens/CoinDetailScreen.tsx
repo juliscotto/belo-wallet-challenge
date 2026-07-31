@@ -1,8 +1,15 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import {
+    ActivityIndicator,
+    Pressable,
+    ScrollView,
+    Text,
+    View,
+} from "react-native";
 import tw from "twrnc";
 
+import { CreatePriceAlertCard } from "@/src/features/priceAlerts/presentation/components/CreatePriceAlertCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { formatUsd } from "../../../../core/formatting/formatCurrency";
 import { useThemeStyles } from "../../../../core/theme/useThemeStyles";
@@ -67,7 +74,7 @@ export function CoinDetailScreen() {
 
   return (
     <SafeAreaView style={[tw`flex-1`, styles.screen]} edges={["top", "bottom"]}>
-      <View style={tw`flex-1 p-5`}>
+      <ScrollView style={tw`flex-1 p-5`}>
         <View style={tw`mb-6 flex-row items-center`}>
           <Pressable
             onPress={() => {
@@ -177,7 +184,10 @@ export function CoinDetailScreen() {
             </Text>
           )}
         </View>
-
+        <CreatePriceAlertCard
+          symbol={asset.symbol}
+          currentPriceUsd={marketPrice.priceUsd}
+        />
         <Pressable
           style={tw`mt-8 items-center rounded-2xl bg-blue-600 p-4`}
           onPress={() => {
@@ -191,7 +201,7 @@ export function CoinDetailScreen() {
         >
           <Text style={tw`font-semibold text-white`}>{t("swap.title")}</Text>
         </Pressable>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

@@ -13,6 +13,13 @@ export type GeneralNotificationData = {
   messageKey: string;
 };
 
+export type PriceAlertTriggeredNotificationData = {
+  symbol: AssetSymbol;
+  targetPriceUsd: number;
+  currentPriceUsd: number;
+  condition: "ABOVE" | "BELOW";
+};
+
 export type AppNotification =
   | {
       id: string;
@@ -27,4 +34,11 @@ export type AppNotification =
       createdAt: string;
       isRead: boolean;
       data: GeneralNotificationData;
+    }
+  | {
+      id: string;
+      type: "PRICE_ALERT_TRIGGERED";
+      createdAt: string;
+      isRead: boolean;
+      data: PriceAlertTriggeredNotificationData;
     };

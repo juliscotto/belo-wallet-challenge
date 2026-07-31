@@ -15,6 +15,7 @@ import { useThemeStyles } from "../../../core/theme/useThemeStyles";
 import { AssetSymbol } from "../../market/domain/entities/Asset";
 import { useAssetPrices } from "../../market/presentation/hooks/useAssetPrices";
 import { NotificationButton } from "../../notifications/presentation/components/NotificationButton";
+import { usePriceAlertEvaluator } from "../../priceAlerts/presentation/hooks/usePriceAlertEvaluator";
 import { SettingsButton } from "../../settings/presentation/components/SettingsButton";
 import { calculatePortfolioTotal } from "../domain/useCases/calculatePortfolioTotal";
 import { usePortfolioStore } from "../store/portfolioStore";
@@ -31,6 +32,10 @@ export function HomeScreen() {
   const hasHydrated = usePortfolioStore((state) => state.hasHydrated);
 
   const pricesQuery = useAssetPrices(PORTFOLIO_SYMBOLS);
+
+  usePriceAlertEvaluator({
+    prices: pricesQuery.data,
+  });
 
   const { styles, isDark } = useThemeStyles();
 

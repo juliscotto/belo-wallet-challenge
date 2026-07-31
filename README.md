@@ -255,6 +255,12 @@ After a successful swap:
 
 These are in-app alerts, not operating system push notifications.
 
+### Price Alerts
+
+Users can create persistent price alerts from coin detail screens. Alerts support above and below conditions and are evaluated whenever fresh market prices are available while the application is running.
+
+Triggered alerts create persistent in-app notifications and are automatically deactivated to prevent duplicate alerts. Background push notifications are outside the current scope.
+
 ## Internationalization
 
 The app supports English and Spanish using i18next and React i18next.

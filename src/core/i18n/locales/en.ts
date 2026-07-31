@@ -102,6 +102,15 @@ export const en = {
     general: {
       title: "Notification",
     },
+    priceAlert: {
+      title: "Price alert reached",
+
+      aboveDescription:
+        "{{symbol}} reached ${{currentPrice}}, above your target of ${{targetPrice}}.",
+
+      belowDescription:
+        "{{symbol}} reached ${{currentPrice}}, below your target of ${{targetPrice}}.",
+    },
   },
 
   errors: {
@@ -111,4 +120,25 @@ export const en = {
 
   amountAccessibilityHint:
     "Enter the amount of the source asset you want to exchange",
+
+  priceAlerts: {
+    title: "Price alerts",
+    createTitle: "Create price alert",
+    currentPrice: "Current price: ${{price}}",
+    targetPrice: "Target price",
+    above: "Above",
+    below: "Below",
+    createAction: "Create alert",
+    created: "Price alert created.",
+    active: "Active",
+    triggered: "Triggered",
+    remove: "Remove price alert",
+    listAbove: "Notify when price reaches or exceeds ${{price}}",
+    listBelow: "Notify when price reaches or falls below ${{price}}",
+    emptyTitle: "No price alerts",
+    emptyDescription: "Create an alert from a coin detail screen.",
+    errors: {
+      invalidTargetPrice: "Enter a valid target price.",
+    },
+  },
 } as const;

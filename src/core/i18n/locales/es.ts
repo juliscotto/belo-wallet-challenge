@@ -113,5 +113,35 @@ export const es = {
 
     amountAccessibilityHint:
       "Ingresá la cantidad del activo de origen que querés intercambiar",
+
+    priceAlert: {
+      title: "Alerta de precio alcanzada",
+
+      aboveDescription:
+        "{{symbol}} alcanzó ${{currentPrice}}, superando tu objetivo de ${{targetPrice}}.",
+
+      belowDescription:
+        "{{symbol}} alcanzó ${{currentPrice}}, por debajo de tu objetivo de ${{targetPrice}}.",
+    },
+  },
+  priceAlerts: {
+    title: "Alertas de precio",
+    createTitle: "Crear alerta de precio",
+    currentPrice: "Precio actual: ${{price}}",
+    targetPrice: "Precio objetivo",
+    above: "Por encima",
+    below: "Por debajo",
+    createAction: "Crear alerta",
+    created: "Alerta de precio creada.",
+    active: "Activa",
+    triggered: "Activada",
+    remove: "Eliminar alerta de precio",
+    listAbove: "Avisar cuando el precio alcance o supere ${{price}}",
+    listBelow: "Avisar cuando el precio alcance o baje de ${{price}}",
+    emptyTitle: "No hay alertas de precio",
+    emptyDescription: "Creá una alerta desde el detalle de una moneda.",
+    errors: {
+      invalidTargetPrice: "Ingresá un precio objetivo válido.",
+    },
   },
 } as const;

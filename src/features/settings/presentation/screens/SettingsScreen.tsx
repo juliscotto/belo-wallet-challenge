@@ -48,6 +48,50 @@ export function SettingsScreen() {
         </Text>
 
         <MarketModeSelector />
+
+        <Pressable
+          style={[
+            tw`
+      mt-4
+      flex-row
+      items-center
+      rounded-2xl
+      border
+      p-4
+    `,
+            styles.border,
+            styles.surface,
+          ]}
+          onPress={() => {
+            router.push("/price-alerts");
+          }}
+          accessibilityRole="button"
+        >
+          <Ionicons
+            name="trending-up-outline"
+            size={22}
+            color={isDark ? "#ffffff" : "#171717"}
+          />
+
+          <Text
+            style={[
+              tw`
+        ml-3
+        flex-1
+        font-semibold
+      `,
+              styles.primaryText,
+            ]}
+          >
+            {t("priceAlerts.title")}
+          </Text>
+
+          <Ionicons
+            name="chevron-forward"
+            size={20}
+            color={isDark ? "#737373" : "#a3a3a3"}
+          />
+        </Pressable>
       </View>
     </SafeAreaView>
   );
