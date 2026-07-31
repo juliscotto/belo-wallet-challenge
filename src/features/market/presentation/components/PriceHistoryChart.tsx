@@ -124,7 +124,7 @@ export function PriceHistoryChart({
               points={svgPoints}
               fill="none"
               stroke={lineColor}
-              strokeWidth={3}
+              strokeWidth={1.5}
               strokeLinejoin="round"
               strokeLinecap="round"
             />
