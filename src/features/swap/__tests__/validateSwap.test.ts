@@ -49,4 +49,14 @@ describe("validateSwap", () => {
       }),
     ).toBe("INVALID_PRICE");
   });
+
+  it("rejects swaps below the minimum USD amount", () => {
+    const result = validateSwap({
+      ...validParams,
+      amount: 0.000001,
+      fromPriceUsd: 60_000,
+    });
+
+    expect(result).toBe("BELOW_MINIMUM_AMOUNT");
+  });
 });
