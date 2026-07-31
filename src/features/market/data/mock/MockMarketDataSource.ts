@@ -1,6 +1,7 @@
 import { AssetSymbol, SUPPORTED_ASSETS } from "../../domain/entities/Asset";
 import { MarketDataSource } from "../dataSources/MarketDataSource";
-import { CoinGeckoSimplePriceDto } from "../remote/CoinGeckoDto";
+import { CoinGeckoSimplePriceDto } from "../dtos/CoinGeckoDto";
+import { CoinGeckoMarketChartDto } from "../dtos/CoinGeckoMarketChartDto";
 
 const MOCK_PRICES: CoinGeckoSimplePriceDto = {
   tether: {
@@ -38,5 +39,40 @@ export class MockMarketDataSource implements MarketDataSource {
         return [id, MOCK_PRICES[id]];
       }),
     );
+  }
+
+  async getPriceHistory(coinGeckoId: string): Promise<CoinGeckoMarketChartDto> {
+    const basePrices: Record<string, number> = {
+      tether: 1,
+      "usd-coin": 1,
+      dai: 1,
+      bitcoin: 64_000,
+      ethereum: 1_900,
+    };
+
+    const basePrice = basePrices[coinGeckoId] ?? 100;
+
+    const now = Date.now();
+
+    const prices: [number, number][] = Array.from(
+      {
+        length: 24,
+      },
+      (_, index) => {
+        const hoursAgo = 23 - index;
+
+        const timestamp = now - hoursAgo * 60 * 60 * 1000;
+
+        const variation = Math.sin(index / 3) * 0.012;
+
+        return [timestamp, basePrice * (1 + variation)];
+      },
+    );
+
+    return {
+      prices,
+      market_caps: [],
+      total_volumes: [],
+    };
   }
 }

@@ -11,7 +11,7 @@ import { usePortfolioStore } from "../../../portfolio/store/portfolioStore";
 import { createNotificationId } from "../../../notifications/domain/createNotificationId";
 import { useNotificationStore } from "../../../notifications/store/notificationStore";
 
-import { triggerSuccessHaptic } from "@/src/core/haptics/haptics";
+import { triggerSuccessHaptic } from "../../../../core/haptics/haptics";
 import { useSwapStore } from "../../store/swapStore";
 
 export function SwapConfirmationScreen() {
@@ -63,6 +63,7 @@ export function SwapConfirmationScreen() {
       quote.toSymbol,
       quote.fromAmount,
       quote.toAmount,
+      quote.fromPriceUsd,
     );
 
     if (!result.success) {

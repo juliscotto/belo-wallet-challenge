@@ -53,8 +53,13 @@ export function HomeScreen() {
 
         <View style={tw`mt-4`}>
           <Button
-            title={t("common.retry")}
-            onPress={() => pricesQuery.refetch()}
+            title={
+              pricesQuery.isFetching ? t("common.retrying") : t("common.retry")
+            }
+            onPress={() => {
+              void pricesQuery.refetch();
+            }}
+            disabled={pricesQuery.isFetching}
           />
         </View>
       </View>
@@ -80,9 +85,10 @@ export function HomeScreen() {
               <Text style={[tw`text-2xl font-bold`, styles.primaryText]}>
                 {t("portfolio.title")}
               </Text>
-
-              <SettingsButton />
-              <NotificationButton />
+              <View style={tw`flex-row items-center gap-2`}>
+                <SettingsButton />
+                <NotificationButton />
+              </View>
             </View>
 
             <BalanceCard

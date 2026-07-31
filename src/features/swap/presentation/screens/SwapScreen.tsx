@@ -23,7 +23,7 @@ import {
 import { useAssetPrices } from "../../../market/presentation/hooks/useAssetPrices";
 import { usePortfolioStore } from "../../../portfolio/store/portfolioStore";
 
-import { triggerErrorHaptic } from "@/src/core/haptics/haptics";
+import { triggerErrorHaptic } from "../../../../core/haptics/haptics";
 import { createSwapQuote } from "../../domain/useCases/createSwapQuote";
 import {
     SwapValidationError,
@@ -137,6 +137,9 @@ export function SwapScreen() {
 
       case "INVALID_PRICE":
         return t("swap.errors.invalidPrice");
+
+      case "BELOW_MINIMUM_AMOUNT":
+        return t("swap.errors.belowMinimumAmount");
     }
   }
 

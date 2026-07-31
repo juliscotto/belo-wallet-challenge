@@ -12,7 +12,7 @@ describe("portfolioStore.swapBalances", () => {
   it("debits and credits both assets in one operation", () => {
     const result = usePortfolioStore
       .getState()
-      .swapBalances("BTC", "ETH", 0.01, 0.2);
+      .swapBalances("BTC", "ETH", 0.01, 0.2, 70_000);
 
     const balances = usePortfolioStore.getState().balances;
 
@@ -32,7 +32,7 @@ describe("portfolioStore.swapBalances", () => {
 
     const result = usePortfolioStore
       .getState()
-      .swapBalances("BTC", "ETH", 100, 10);
+      .swapBalances("BTC", "ETH", 100, 10, 70_000);
 
     expect(result).toEqual({
       success: false,

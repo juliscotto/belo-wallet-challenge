@@ -6,4 +6,13 @@ export const marketQueryKeys = {
 
   prices: (symbols: AssetSymbol[], mode: MarketDataMode) =>
     [...marketQueryKeys.all, "prices", [...symbols].sort(), mode] as const,
+
+  priceHistory: (coinGeckoId: string, mode: MarketDataMode) =>
+    [
+      ...marketQueryKeys.all,
+      "price-history",
+      coinGeckoId,
+      mode,
+      "24h",
+    ] as const,
 };

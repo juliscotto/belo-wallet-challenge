@@ -8,13 +8,20 @@ import {
     PortfolioBalance,
 } from "../domain/entities/PortfolioBalance";
 
+const MINIMUM_SWAP_AMOUNT_USD = 1;
+
 export type SwapExecutionResult =
   | {
       success: true;
     }
   | {
       success: false;
-      reason: "INVALID_AMOUNT" | "SAME_ASSET" | "INSUFFICIENT_BALANCE";
+      reason:
+        | "INVALID_AMOUNT"
+        | "SAME_ASSET"
+        | "INSUFFICIENT_BALANCE"
+        | "INVALID_PRICE"
+        | "BELOW_MINIMUM_AMOUNT";
     };
 
 type PortfolioState = {
@@ -32,6 +39,7 @@ type PortfolioState = {
     toSymbol: AssetSymbol,
     fromAmount: number,
     toAmount: number,
+    fromPriceUsd: number,
   ) => SwapExecutionResult;
 };
 
@@ -60,7 +68,14 @@ export const usePortfolioStore = create<PortfolioState>()(
       setHasHydrated: (hasHydrated) => {
         set({ hasHydrated });
       },
-      swapBalances: (fromSymbol, toSymbol, fromAmount, toAmount) => {
+
+      swapBalances: (
+        fromSymbol,
+        toSymbol,
+        fromAmount,
+        toAmount,
+        fromPriceUsd,
+      ) => {
         let result: SwapExecutionResult = {
           success: false,
           reason: "INVALID_AMOUNT",
@@ -76,10 +91,35 @@ export const usePortfolioStore = create<PortfolioState>()(
             return state;
           }
 
-          if (fromAmount <= 0 || toAmount <= 0) {
+          if (
+            !Number.isFinite(fromAmount) ||
+            !Number.isFinite(toAmount) ||
+            fromAmount <= 0 ||
+            toAmount <= 0
+          ) {
             result = {
               success: false,
               reason: "INVALID_AMOUNT",
+            };
+
+            return state;
+          }
+
+          if (!Number.isFinite(fromPriceUsd) || fromPriceUsd <= 0) {
+            result = {
+              success: false,
+              reason: "INVALID_PRICE",
+            };
+
+            return state;
+          }
+
+          const amountUsd = fromAmount * fromPriceUsd;
+
+          if (amountUsd < MINIMUM_SWAP_AMOUNT_USD) {
+            result = {
+              success: false,
+              reason: "BELOW_MINIMUM_AMOUNT",
             };
 
             return state;

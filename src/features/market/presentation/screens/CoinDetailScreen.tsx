@@ -12,10 +12,12 @@ import {
 } from "../../../market/domain/entities/Asset";
 import { useAssetPrices } from "../../../market/presentation/hooks/useAssetPrices";
 import { usePortfolioStore } from "../../../portfolio/store/portfolioStore";
+import { PriceHistoryChart } from "../components/PriceHistoryChart";
+import { usePriceHistory } from "../hooks/usePriceHistory";
 
 export function CoinDetailScreen() {
   const { t } = useTranslation();
-  const { styles } = useThemeStyles();
+  const { styles, isDark } = useThemeStyles();
 
   const params = useLocalSearchParams<{
     symbol?: string;
@@ -29,6 +31,10 @@ export function CoinDetailScreen() {
 
   const pricesQuery = useAssetPrices(symbol ? [symbol] : []);
 
+  const historyQuery = usePriceHistory(asset.coinGeckoId);
+  if (historyQuery.isError) {
+    console.error("Price history error:", historyQuery.error);
+  }
   if (!asset) {
     return (
       <View style={[tw`flex-1 items-center justify-center`, styles.screen]}>
@@ -105,6 +111,71 @@ export function CoinDetailScreen() {
           <Text style={[tw`mt-1`, styles.secondaryText]}>
             {formatUsd(holdingValueUsd)}
           </Text>
+        </View>
+        <View style={[tw`mt-6 rounded-2xl p-4`, styles.surface]}>
+          <Text style={[tw`mb-4 text-lg font-semibold`, styles.primaryText]}>
+            {t("coinDetail.priceHistory24h")}
+          </Text>
+
+          {historyQuery.isPending && (
+            <View style={tw`h-48 items-center justify-center`}>
+              <ActivityIndicator color={isDark ? "#ffffff" : "#171717"} />
+            </View>
+          )}
+
+          {historyQuery.isError && (
+            <View style={tw`h-48 items-center justify-center`}>
+              <Text
+                accessibilityRole="alert"
+                accessibilityLiveRegion="assertive"
+                style={[tw`text-center`, styles.secondaryText]}
+              >
+                {t("coinDetail.priceHistoryError")}
+              </Text>
+
+              <Pressable
+                style={[
+                  tw`mt-4 rounded-xl px-4 py-3`,
+                  historyQuery.isFetching
+                    ? tw`bg-neutral-400`
+                    : tw`bg-blue-600`,
+                ]}
+                onPress={() => {
+                  void historyQuery.refetch();
+                }}
+                disabled={historyQuery.isFetching}
+                accessibilityRole="button"
+                accessibilityLabel={
+                  historyQuery.isFetching
+                    ? t("common.retrying")
+                    : t("common.retry")
+                }
+                accessibilityState={{
+                  disabled: historyQuery.isFetching,
+                  busy: historyQuery.isFetching,
+                }}
+              >
+                <Text style={tw`font-semibold text-white`}>
+                  {historyQuery.isFetching
+                    ? t("common.retrying")
+                    : t("common.retry")}
+                </Text>
+              </Pressable>
+            </View>
+          )}
+
+          {historyQuery.data && historyQuery.data.length > 1 && (
+            <PriceHistoryChart
+              points={historyQuery.data}
+              accessibilityLabel={t("coinDetail.priceChartAccessibility")}
+            />
+          )}
+
+          {historyQuery.data?.length === 0 && (
+            <Text style={[tw`py-12 text-center`, styles.secondaryText]}>
+              {t("coinDetail.noPriceHistory")}
+            </Text>
+          )}
         </View>
 
         <Pressable

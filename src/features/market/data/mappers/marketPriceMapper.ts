@@ -1,6 +1,6 @@
 import { AssetSymbol, SUPPORTED_ASSETS } from "../../domain/entities/Asset";
 import { MarketPrice } from "../../domain/entities/MarketPrice";
-import { CoinGeckoSimplePriceDto } from "../remote/CoinGeckoDto";
+import { CoinGeckoSimplePriceDto } from "../dtos/CoinGeckoDto";
 
 export function mapCoinGeckoPrices(
   dto: CoinGeckoSimplePriceDto,

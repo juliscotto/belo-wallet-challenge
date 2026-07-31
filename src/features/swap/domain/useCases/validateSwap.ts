@@ -4,7 +4,8 @@ export type SwapValidationError =
   | "INVALID_AMOUNT"
   | "SAME_ASSET"
   | "INSUFFICIENT_BALANCE"
-  | "INVALID_PRICE";
+  | "INVALID_PRICE"
+  | "BELOW_MINIMUM_AMOUNT";
 
 type ValidateSwapParams = {
   fromSymbol: AssetSymbol;
@@ -37,6 +38,12 @@ export function validateSwap({
 
   if (!fromPriceUsd || !toPriceUsd || fromPriceUsd <= 0 || toPriceUsd <= 0) {
     return "INVALID_PRICE";
+  }
+
+  const amountUsd = amount * fromPriceUsd;
+
+  if (amountUsd < 1) {
+    return "BELOW_MINIMUM_AMOUNT";
   }
 
   return null;

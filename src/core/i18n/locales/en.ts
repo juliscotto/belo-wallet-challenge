@@ -37,10 +37,15 @@ export const en = {
     yourBalance: "Your balance",
     invalidAsset: "Invalid asset",
     priceUnavailable: "Price unavailable",
+    priceHistory24h: "Price history · 24h",
+    priceHistoryError: "Unable to load price history.",
+    noPriceHistory: "No price history is available.",
+    priceChartAccessibility: "Price chart for the last 24 hours",
   },
 
   common: {
     retry: "Retry",
+    retrying: "Retrying...",
     loading: "Loading...",
     cancel: "Cancel",
   },
@@ -68,6 +73,7 @@ export const en = {
       sameAsset: "Choose two different assets",
       insufficientBalance: "Insufficient balance",
       invalidPrice: "Price information is unavailable",
+      belowMinimumAmount: "The minimum transaction amount is USD 1.",
     },
   },
   notifications: {

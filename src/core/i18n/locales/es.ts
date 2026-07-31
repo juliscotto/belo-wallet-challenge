@@ -39,10 +39,15 @@ export const es = {
     yourBalance: "Tu balance",
     invalidAsset: "Activo inválido",
     priceUnavailable: "Precio no disponible",
+    priceHistory24h: "Historial de precios · 24 h",
+    priceHistoryError: "No se pudo cargar el historial de precios.",
+    noPriceHistory: "No hay historial de precios disponible.",
+    priceChartAccessibility: "Gráfico de precios de las últimas 24 horas",
   },
 
   common: {
     retry: "Reintentar",
+    retrying: "Reintentando...",
     loading: "Cargando...",
     cancel: "Cancelar",
   },
@@ -70,6 +75,7 @@ export const es = {
       sameAsset: "Elegí dos activos diferentes",
       insufficientBalance: "Balance insuficiente",
       invalidPrice: "La información del precio no está disponible",
+      belowMinimumAmount: "El monto mínimo de la transacción es de USD 1.",
     },
   },
   notifications: {

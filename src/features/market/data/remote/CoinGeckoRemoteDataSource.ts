@@ -1,7 +1,8 @@
 import { HttpClient } from "@/src/core/api/httpClient";
 import { AssetSymbol, SUPPORTED_ASSETS } from "../../domain/entities/Asset";
 import { MarketDataSource } from "../dataSources/MarketDataSource";
-import { CoinGeckoSimplePriceDto } from "./CoinGeckoDto";
+import { CoinGeckoSimplePriceDto } from "../dtos/CoinGeckoDto";
+import { CoinGeckoMarketChartDto } from "../dtos/CoinGeckoMarketChartDto";
 
 export interface MarketRemoteDataSource {
   getPrices(symbols: AssetSymbol[]): Promise<CoinGeckoSimplePriceDto>;
@@ -23,5 +24,17 @@ export class CoinGeckoRemoteDataSource implements MarketDataSource {
         include_last_updated_at: true,
       },
     });
+  }
+
+  async getPriceHistory(coinGeckoId: string): Promise<CoinGeckoMarketChartDto> {
+    return this.httpClient.get<CoinGeckoMarketChartDto>(
+      `coins/${coinGeckoId}/market_chart`,
+      {
+        query: {
+          vs_currency: "usd",
+          days: "1",
+        },
+      },
+    );
   }
 }

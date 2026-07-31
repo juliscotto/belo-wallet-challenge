@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 import tw from "twrnc";
 
 import { useAppTheme } from "../../../../core/theme/useAppTheme";
@@ -42,13 +42,14 @@ export function NotificationButton() {
       }
       hitSlop={8}
     >
-      <Ionicons
-        name="notifications-outline"
-        size={26}
-        color={isDark ? "#ffffff" : "#171717"}
-      />
-
-      <NotificationBadge count={unreadCount} />
+      <View style={tw`relative`}>
+        <Ionicons
+          name="notifications-outline"
+          size={26}
+          color={isDark ? "#ffffff" : "#171717"}
+        />
+        <NotificationBadge count={unreadCount} />
+      </View>
     </Pressable>
   );
 }
