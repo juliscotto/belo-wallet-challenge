@@ -23,6 +23,7 @@ import {
 import { useAssetPrices } from "../../../market/presentation/hooks/useAssetPrices";
 import { usePortfolioStore } from "../../../portfolio/store/portfolioStore";
 
+import { triggerErrorHaptic } from "@/src/core/haptics/haptics";
 import { createSwapQuote } from "../../domain/useCases/createSwapQuote";
 import {
     SwapValidationError,
@@ -143,6 +144,7 @@ export function SwapScreen() {
     setHasSubmitted(true);
 
     if (validationError || !quote) {
+      void triggerErrorHaptic();
       return;
     }
 
@@ -227,6 +229,7 @@ export function SwapScreen() {
             ]}
           >
             <TextInput
+              testID="swap-amount-input"
               style={[tw`flex-1 py-4 text-xl`, styles.primaryText]}
               value={amountText}
               onChangeText={(value) => {
@@ -244,6 +247,7 @@ export function SwapScreen() {
               placeholderTextColor={isDark ? "#737373" : "#a3a3a3"}
               autoCorrect={false}
               accessibilityLabel={t("swap.amount")}
+              accessibilityHint={t("swap.amountAccessibilityHint")}
             />
 
             <Text
@@ -264,7 +268,6 @@ export function SwapScreen() {
 
                 setHasSubmitted(false);
               }}
-              accessibilityRole="button"
             >
               <Text style={tw`text-sm font-semibold text-blue-500`}>
                 {availableBalance} {fromSymbol}
@@ -315,6 +318,7 @@ export function SwapScreen() {
             <Text
               style={tw`mt-4 text-sm text-red-500`}
               accessibilityRole="alert"
+              accessibilityLiveRegion="assertive"
             >
               {getValidationMessage(validationError)}
             </Text>
@@ -330,6 +334,10 @@ export function SwapScreen() {
             disabled={Boolean(validationError) || pricesQuery.isError}
             onPress={handleContinue}
             accessibilityRole="button"
+            accessibilityLabel={t("swap.continue")}
+            accessibilityState={{
+              disabled: !quote,
+            }}
           >
             <Text style={tw`text-base font-semibold text-white`}>
               {t("swap.continue")}

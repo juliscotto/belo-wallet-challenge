@@ -1,4 +1,12 @@
-import { ActivityIndicator, Button, FlatList, Text, View } from "react-native";
+import { router } from "expo-router";
+import {
+    ActivityIndicator,
+    Button,
+    FlatList,
+    Pressable,
+    Text,
+    View,
+} from "react-native";
 import tw from "twrnc";
 
 import { useTranslation } from "react-i18next";
@@ -27,7 +35,7 @@ export function HomeScreen() {
 
   if (!hasHydrated || pricesQuery.isPending) {
     return (
-      <View style={tw`flex-1 items-center justify-center bg-white`}>
+      <View style={[tw`flex-1 items-center justify-center`, styles.screen]}>
         <ActivityIndicator color={isDark ? "#ffffff" : "#171717"} />
 
         <Text style={tw`mt-3 text-neutral-600`}>{t("portfolio.loading")}</Text>
@@ -79,6 +87,19 @@ export function HomeScreen() {
               totalBalanceUsd={totalBalanceUsd}
               isUpdating={pricesQuery.isFetching}
             />
+
+            <Pressable
+              style={tw`mt-8 items-center rounded-2xl bg-blue-600 p-4`}
+              onPress={() => {
+                router.push({
+                  pathname: "/swap",
+                });
+              }}
+            >
+              <Text style={tw`font-semibold text-white`}>
+                {t("swap.title")}
+              </Text>
+            </Pressable>
 
             <Text
               style={[tw`mb-2 mt-8 text-lg font-semibold`, styles.primaryText]}

@@ -2,7 +2,9 @@ import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 import tw from "twrnc";
 
+import { useTranslation } from "react-i18next";
 import { formatUsd } from "../../../../core/formatting/formatCurrency";
+import { useThemeStyles } from "../../../../core/theme/useThemeStyles";
 import {
     AssetSymbol,
     SUPPORTED_ASSETS,
@@ -15,8 +17,6 @@ type AssetRowProps = {
   changePercentage24h: number | null;
 };
 
-import { useThemeStyles } from "../../../../core/theme/useThemeStyles";
-
 export function AssetRow({
   symbol,
   balance,
@@ -26,6 +26,7 @@ export function AssetRow({
   const asset = SUPPORTED_ASSETS[symbol];
   const holdingValueUsd = balance * priceUsd;
   const { styles } = useThemeStyles();
+  const { t } = useTranslation();
 
   const formattedChange =
     changePercentage24h === null
@@ -48,9 +49,11 @@ export function AssetRow({
         styles.border,
       ]}
       accessible
-      accessibilityLabel={`${asset.name}, balance ${balance} ${symbol}, value ${formatUsd(
+      accessibilityRole="button"
+      accessibilityLabel={`${asset.name}, ${balance} ${symbol}, ${formatUsd(
         holdingValueUsd,
       )}`}
+      accessibilityHint={t("portfolio.openAssetDetails")}
       onPress={() => {
         router.push({
           pathname: "/coin/[symbol]",

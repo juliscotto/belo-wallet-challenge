@@ -6,6 +6,7 @@ export const es = {
     loading: "Cargando portafolio...",
     updatingPrices: "Actualizando precios...",
     unableToLoadPrices: "No se pudieron cargar los precios",
+    openAssetDetails: "Abrir detalle del activo",
   },
 
   market: {
@@ -77,5 +78,13 @@ export const es = {
     general: {
       title: "Notificación",
     },
+
+    errors: {
+      unexpectedTitle: "Ocurrió un error",
+      retry: "Intentar nuevamente",
+    },
+
+    amountAccessibilityHint:
+      "Ingresá la cantidad del activo de origen que querés intercambiar",
   },
 } as const;

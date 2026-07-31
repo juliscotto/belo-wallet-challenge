@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Modal, Pressable, Text, View } from "react-native";
 import tw from "twrnc";
 
+import { triggerSelectionHaptic } from "@/src/core/haptics/haptics";
 import { useThemeStyles } from "../../../../core/theme/useThemeStyles";
 import {
     AssetSymbol,
@@ -75,7 +76,11 @@ export function AssetSelector({
           }}
         >
           <Pressable
-            style={[tw`rounded-t-3xl p-5`, styles.screen]}
+            style={[
+              tw`rounded-t-3xl p-5`,
+              styles.screen,
+              styles.elevatedSurface,
+            ]}
             onPress={(event) => {
               event.stopPropagation();
             }}
@@ -108,6 +113,7 @@ export function AssetSelector({
                     styles.border,
                   ]}
                   onPress={() => {
+                    void triggerSelectionHaptic();
                     onSelect(symbol);
                     setIsVisible(false);
                   }}

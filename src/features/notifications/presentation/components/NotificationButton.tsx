@@ -26,7 +26,13 @@ export function NotificationButton() {
         router.push("/notifications");
       }}
       accessibilityRole="button"
-      accessibilityLabel={t("notifications.open")}
+      accessibilityLabel={
+        unreadCount === 0
+          ? t("notifications.open")
+          : t("notifications.unreadCount", {
+              count: unreadCount,
+            })
+      }
       accessibilityHint={
         unreadCount > 0
           ? t("notifications.unreadCount", {

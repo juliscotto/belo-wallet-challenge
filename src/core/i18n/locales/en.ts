@@ -6,6 +6,7 @@ export const en = {
     loading: "Loading portfolio...",
     updatingPrices: "Updating prices...",
     unableToLoadPrices: "Unable to load prices",
+    openAssetDetails: "Open asset details",
   },
 
   market: {
@@ -78,4 +79,12 @@ export const en = {
       title: "Notification",
     },
   },
+
+  errors: {
+    unexpectedTitle: "Something went wrong",
+    retry: "Try again",
+  },
+
+  amountAccessibilityHint:
+    "Enter the amount of the source asset you want to exchange",
 } as const;

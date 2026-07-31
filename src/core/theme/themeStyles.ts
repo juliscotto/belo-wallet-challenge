@@ -7,6 +7,8 @@ export const lightThemeStyles = {
   primaryText: tw`text-neutral-950`,
   secondaryText: tw`text-neutral-500`,
   border: tw`border-neutral-200`,
+  elevatedSurface: tw`bg-white`,
+  input: tw`bg-neutral-100`,
 };
 
 export const darkThemeStyles = {
@@ -16,4 +18,6 @@ export const darkThemeStyles = {
   primaryText: tw`text-white`,
   secondaryText: tw`text-neutral-400`,
   border: tw`border-neutral-800`,
+  elevatedSurface: tw`bg-neutral-800`,
+  input: tw`bg-neutral-900`,
 };
