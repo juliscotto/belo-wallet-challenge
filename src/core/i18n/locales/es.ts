@@ -14,9 +14,24 @@ export const es = {
   },
 
   settings: {
+    title: "Configuración",
+    open: "Abrir configuración",
+
     language: "Idioma",
     english: "Inglés",
     spanish: "Español",
+
+    marketDataSource: "Fuente de precios",
+    marketDataDescription:
+      "Elegí si los precios provienen de CoinGecko o de datos locales simulados.",
+
+    remote: "Remoto",
+    remoteDescription:
+      "Usa precios reales de criptomonedas obtenidos desde CoinGecko.",
+
+    mock: "Simulado",
+    mockDescription:
+      "Usa precios locales predecibles sin realizar solicitudes de red.",
   },
 
   coinDetail: {

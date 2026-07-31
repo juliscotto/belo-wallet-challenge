@@ -15,6 +15,7 @@ import { useThemeStyles } from "../../../core/theme/useThemeStyles";
 import { AssetSymbol } from "../../market/domain/entities/Asset";
 import { useAssetPrices } from "../../market/presentation/hooks/useAssetPrices";
 import { NotificationButton } from "../../notifications/presentation/components/NotificationButton";
+import { SettingsButton } from "../../settings/presentation/components/SettingsButton";
 import { calculatePortfolioTotal } from "../domain/useCases/calculatePortfolioTotal";
 import { usePortfolioStore } from "../store/portfolioStore";
 import { AssetRow } from "./components/AssetRow";
@@ -80,6 +81,7 @@ export function HomeScreen() {
                 {t("portfolio.title")}
               </Text>
 
+              <SettingsButton />
               <NotificationButton />
             </View>
 

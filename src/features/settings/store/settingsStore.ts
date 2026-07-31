@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type MarketDataMode = "remote" | "mock";
+export type MarketDataMode = "remote" | "mock";
 
 type SettingsState = {
   marketDataMode: MarketDataMode;

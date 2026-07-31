@@ -2,13 +2,14 @@
 
 A mobile cryptocurrency wallet simulation built with React Native, Expo, and TypeScript.
 
-Users can view their portfolio, check cryptocurrency prices, simulate asset swaps, and receive in-app transaction alerts.
+Users can view their portfolio, check cryptocurrency prices, simulate asset swaps, receive in-app transaction alerts, and choose between live or simulated market data.
 
 ## Features
 
 - Portfolio with persisted balances
 - Live prices from CoinGecko
-- Mock mode for API failures or rate limits
+- Explicit remote and mock market data modes
+- Settings screen for changing the market data source
 - Asset detail screens
 - Swap simulation with validations
 - Atomic balance updates
@@ -67,7 +68,7 @@ Add `.env` to `.gitignore`:
 .env
 ```
 
-You can also provide a `.env.example`:
+You can also provide a `.env.example` file:
 
 ```env
 EXPO_PUBLIC_COINGECKO_BASE_URL=https://api.coingecko.com/api/v3
@@ -88,7 +89,7 @@ Or start Expo:
 bunx expo start
 ```
 
-Clear Metro cache:
+Clear the Metro cache:
 
 ```bash
 bunx expo start --clear
@@ -131,12 +132,19 @@ bunx expo-doctor
 ```text
 src/
 ├── app/
+│   ├── _layout.tsx
+│   ├── index.tsx
+│   ├── notifications.tsx
+│   ├── settings.tsx
+│   ├── coin/
+│   └── swap/
 ├── core/
 ├── features/
 │   ├── market/
 │   ├── portfolio/
 │   ├── swap/
-│   └── notifications/
+│   ├── notifications/
+│   └── settings/
 └── providers/
 ```
 
@@ -148,27 +156,59 @@ The app uses CoinGecko to retrieve current USD prices and 24-hour percentage cha
 
 TanStack Query handles:
 
-- Caching
+- Request caching
 - Loading and error states
 - Background refetching
 - Stale data
+- Request deduplication
 
-The project supports two data modes:
+The project supports two explicit market data modes:
 
-- `remote`: live CoinGecko prices
-- `mock`: local predefined prices
+- `remote`: retrieves live prices from CoinGecko
+- `mock`: uses predefined local prices without network requests
+
+The selected mode is stored in a Zustand settings store.
+
+The market repository reads the current setting and selects the corresponding data source:
+
+```text
+Settings store
+      ↓
+Market repository
+      ↓
+Remote or mock data source
+```
+
+The selected mode is also included in the TanStack Query key, ensuring that prices are requested again when the user changes the data source.
+
+The app does not silently fall back to mock prices when CoinGecko fails. In remote mode, API failures are exposed through the corresponding UI error state.
+
+## Settings
+
+A settings button is available next to the notification button on the portfolio screen.
+
+The Settings screen allows the user to choose between:
+
+- Remote market data
+- Mock market data
+
+Remote mode uses CoinGecko and requires network access.
+
+Mock mode uses predictable local prices and is useful for development, testing, API rate limits, or unavailable credentials.
+
+The setting is applied immediately after selection.
 
 ## Portfolio
 
 The total balance is calculated by multiplying each asset balance by its current USD price and adding all holding values.
 
-Portfolio balances are persisted with Zustand Persist and AsyncStorage.
+Portfolio balances are persisted using Zustand Persist and AsyncStorage.
 
 ## Swap Flow
 
 1. Select source and destination assets.
 2. Enter the amount to exchange.
-3. Validate amount, balance, asset selection, and prices.
+3. Validate the amount, balance, asset selection, and prices.
 4. Calculate the destination amount.
 5. Review the confirmation screen.
 6. Confirm the transaction.
@@ -207,7 +247,7 @@ After a successful swap:
 - The notification appears in the notification screen
 - The user can mark it as read
 
-These are in-app alerts, not system push notifications.
+These are in-app alerts, not operating system push notifications.
 
 ## Internationalization
 
@@ -215,7 +255,7 @@ The app supports English and Spanish using i18next and React i18next.
 
 The initial language follows the device locale.
 
-Notifications store structured data instead of translated strings, allowing them to be rendered in the current language.
+Notifications store structured transaction data instead of translated strings, allowing them to be rendered in the currently selected language.
 
 ## Dark Mode
 
@@ -229,6 +269,7 @@ The app includes:
 - Disabled accessibility states
 - Screen-reader-friendly buttons
 - Announced validation errors
+- Accessible settings options
 - Larger touch targets
 - Scalable text
 - Safe area support
@@ -241,11 +282,29 @@ Haptic feedback is used for:
 - Validation errors
 - Successful swaps
 
-A physical device is recommended for testing haptics.
+A physical device is recommended for testing haptic feedback.
 
 ## Error Handling
 
-Expected errors, such as API failures or invalid swaps, are handled by the corresponding screen.
+Expected errors are represented through explicit UI states.
+
+API failures are captured by TanStack Query and exposed through properties such as:
+
+```text
+isPending
+isError
+error
+refetch
+```
+
+Affected screens can display loading, error, and retry states without crashing the application.
+
+Invalid swaps remain inside the swap flow and display translated validation messages for cases such as:
+
+- Invalid amount
+- Same source and destination asset
+- Insufficient balance
+- Invalid or unavailable prices
 
 Unexpected React rendering errors are handled by a global Error Boundary in:
 
@@ -261,8 +320,14 @@ Unit tests cover:
 - Swap quote calculations
 - Swap validations
 - Atomic balance updates
+- Failure cases that must not modify balances
 
-Integration tests cover the main Swap Screen flow.
+Integration tests cover the main Swap Screen flow, including:
+
+- Rendering the screen
+- Entering an amount
+- Displaying the estimated destination amount
+- Continuing to the confirmation route
 
 AsyncStorage is mocked in Jest because its real implementation depends on native modules.
 
@@ -270,11 +335,27 @@ AsyncStorage is mocked in Jest because its real implementation depends on native
 
 ### Zustand
 
-Used for local state such as balances, pending swaps, and notifications.
+Used for local state such as:
+
+- Portfolio balances
+- Market data mode
+- Pending swaps
+- Completed swaps
+- Notifications
 
 ### TanStack Query
 
 Used for remote market data, caching, loading, errors, and refetching.
+
+The selected market data mode is included in the query key so changing from remote to mock, or from mock to remote, triggers the appropriate query.
+
+### Repository Data Source Selection
+
+The market repository receives both remote and mock data sources.
+
+It reads the current Zustand setting through a callback and selects the appropriate implementation before requesting prices.
+
+This keeps the UI independent from the concrete data source.
 
 ### Domain Use Cases
 
@@ -284,12 +365,20 @@ Business calculations and validations are kept outside React components to impro
 
 Pending swap quotes are not persisted because market prices may become stale.
 
+### Explicit Mock Mode
+
+Mock data is selected manually from the Settings screen.
+
+The app does not automatically replace failed remote prices with simulated prices, preventing mock values from being mistaken for live market data.
+
 ## Trade-offs
 
 - Swaps are simulated locally
 - No backend or blockchain integration
 - No real funds or private keys
 - CoinGecko depends on network availability and API limits
+- Mock mode must be selected manually
+- The selected market data mode is not persisted after restarting the app
 - Notifications are in-app only
 - Transaction history and price charts are outside the current scope
 
