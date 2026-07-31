@@ -84,7 +84,7 @@ export const en = {
     unreadCount_other: "{{count}} unread notifications",
 
     markAllAsRead: "Mark all as read",
-
+    allMarkedAsRead: "All read",
     emptyTitle: "No notifications yet",
     emptyDescription: "Your activity notifications will appear here.",
 

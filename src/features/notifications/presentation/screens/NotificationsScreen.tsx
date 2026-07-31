@@ -1,10 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { FlatList, Pressable, Text, View } from "react-native";
+import { Animated, FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 
+import { useEffect, useRef, useState } from "react";
 import { useAppTheme } from "../../../../core/theme/useAppTheme";
 import { useThemeStyles } from "../../../../core/theme/useThemeStyles";
 import { useNotificationStore } from "../../store/notificationStore";
@@ -25,6 +26,58 @@ export function NotificationsScreen() {
     (notification) => !notification.isRead,
   ).length;
 
+  const [showMarkAll, setShowMarkAll] = useState(unreadCount > 0);
+
+  const [hasMarkedAll, setHasMarkedAll] = useState(false);
+
+  const markAllOpacity = useRef(new Animated.Value(1)).current;
+
+  const markAllScale = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (unreadCount > 0) {
+      setShowMarkAll(true);
+      setHasMarkedAll(false);
+
+      markAllOpacity.setValue(1);
+      markAllScale.setValue(1);
+    }
+  }, [unreadCount, markAllOpacity, markAllScale]);
+
+  function handleMarkAllAsRead() {
+    if (hasMarkedAll) {
+      return;
+    }
+
+    markAllAsRead();
+    setHasMarkedAll(true);
+
+    Animated.sequence([
+      Animated.spring(markAllScale, {
+        toValue: 1.06,
+        friction: 5,
+        tension: 120,
+        useNativeDriver: true,
+      }),
+
+      Animated.spring(markAllScale, {
+        toValue: 1,
+        friction: 5,
+        tension: 120,
+        useNativeDriver: true,
+      }),
+
+      Animated.delay(700),
+
+      Animated.timing(markAllOpacity, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setShowMarkAll(false);
+    });
+  }
   return (
     <SafeAreaView style={[tw`flex-1`, styles.screen]} edges={["top", "bottom"]}>
       <View style={tw`px-5 pb-4 pt-3`}>
@@ -50,20 +103,65 @@ export function NotificationsScreen() {
           </Text>
         </View>
 
-        {unreadCount > 0 && (
-          <View style={tw`mt-3 items-end`}>
+        {showMarkAll && (
+          <Animated.View
+            style={[
+              tw`mt-3 items-end`,
+              {
+                opacity: markAllOpacity,
+                transform: [
+                  {
+                    scale: markAllScale,
+                  },
+                ],
+              },
+            ]}
+          >
             <Pressable
-              style={tw`rounded-lg px-2 py-2`}
-              onPress={markAllAsRead}
+              style={[
+                tw`
+          flex-row
+          items-center
+          rounded-full
+          px-3
+          py-2
+        `,
+                hasMarkedAll ? tw`bg-green-500/15` : tw`bg-blue-500/10`,
+              ]}
+              onPress={handleMarkAllAsRead}
+              disabled={hasMarkedAll}
               accessibilityRole="button"
-              accessibilityLabel={t("notifications.markAllAsRead")}
+              accessibilityLabel={
+                hasMarkedAll
+                  ? t("notifications.allMarkedAsRead")
+                  : t("notifications.markAllAsRead")
+              }
+              accessibilityState={{
+                disabled: hasMarkedAll,
+              }}
+              accessibilityLiveRegion="polite"
               hitSlop={8}
             >
-              <Text style={tw`text-sm font-semibold text-blue-500`}>
-                {t("notifications.markAllAsRead")}
+              <Ionicons
+                name={
+                  hasMarkedAll ? "checkmark-circle" : "checkmark-done-outline"
+                }
+                size={18}
+                color={hasMarkedAll ? "#22c55e" : "#3b82f6"}
+              />
+
+              <Text
+                style={[
+                  tw`ml-2 text-sm font-semibold`,
+                  hasMarkedAll ? tw`text-green-500` : tw`text-blue-500`,
+                ]}
+              >
+                {hasMarkedAll
+                  ? t("notifications.allMarkedAsRead")
+                  : t("notifications.markAllAsRead")}
               </Text>
             </Pressable>
-          </View>
+          </Animated.View>
         )}
       </View>
 
