@@ -1,4 +1,5 @@
 import { AssetSymbol } from "../../../market/domain/entities/Asset";
+import { SWAP_QUOTE_DURATION_MS } from "../constants/swapConstants";
 
 import { SwapQuote } from "../entities/SwapQuote";
 
@@ -8,6 +9,7 @@ type CreateSwapQuoteParams = {
   fromAmount: number;
   fromPriceUsd: number;
   toPriceUsd: number;
+  now?: number;
 };
 
 export function createSwapQuote({
@@ -16,6 +18,7 @@ export function createSwapQuote({
   fromAmount,
   fromPriceUsd,
   toPriceUsd,
+  now = Date.now(),
 }: CreateSwapQuoteParams): SwapQuote {
   const valueUsd = fromAmount * fromPriceUsd;
 
@@ -31,5 +34,7 @@ export function createSwapQuote({
     fromPriceUsd,
     toPriceUsd,
     exchangeRate,
+    createdAt: new Date(now).toISOString(),
+    expiresAt: new Date(now + SWAP_QUOTE_DURATION_MS).toISOString(),
   };
 }

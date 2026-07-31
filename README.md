@@ -217,6 +217,12 @@ Portfolio balances are persisted using Zustand Persist and AsyncStorage.
 
 Swaps are simulated locally and do not execute real cryptocurrency transactions.
 
+### Quote Expiration
+
+Swap quotes are valid for 30 seconds. The confirmation screen displays a countdown and prevents execution after expiration.
+
+Expired quotes can be refreshed using the latest available market prices. Refreshing preserves the source amount but may change the destination amount and exchange rate.
+
 ## Atomic Balance Updates
 
 Both balances are updated inside a single Zustand state update.

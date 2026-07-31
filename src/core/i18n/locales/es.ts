@@ -77,6 +77,12 @@ export const es = {
       invalidPrice: "La información del precio no está disponible",
       belowMinimumAmount: "El monto mínimo de la transacción es de USD 1.",
     },
+
+    quoteExpiresIn: "La cotización vence en",
+    quoteExpired: "Esta cotización venció.",
+    refreshQuote: "Actualizar cotización",
+    refreshQuoteError:
+      "No se pudo actualizar la cotización. Intentá nuevamente.",
   },
   notifications: {
     title: "Notificaciones",

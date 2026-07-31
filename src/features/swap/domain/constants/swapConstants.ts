@@ -1,0 +1,1 @@
+export const SWAP_QUOTE_DURATION_MS = 30 * 1000;

@@ -11,4 +11,7 @@ export type SwapQuote = {
   toPriceUsd: number;
 
   exchangeRate: number;
+
+  createdAt: string;
+  expiresAt: string;
 };

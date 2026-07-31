@@ -132,6 +132,10 @@ describe("complete swap flow", () => {
       toPriceUsd: 3_000,
     });
 
+    expect(pendingQuote?.createdAt).toEqual(expect.any(String));
+
+    expect(pendingQuote?.expiresAt).toEqual(expect.any(String));
+
     await swapView.rerender(<SwapConfirmationScreen />);
 
     expect(await swapView.findByText(/0\.01\s+BTC/)).toBeTruthy();

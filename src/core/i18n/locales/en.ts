@@ -75,6 +75,11 @@ export const en = {
       invalidPrice: "Price information is unavailable",
       belowMinimumAmount: "The minimum transaction amount is USD 1.",
     },
+
+    quoteExpiresIn: "Quote expires in",
+    quoteExpired: "This quote has expired.",
+    refreshQuote: "Refresh quote",
+    refreshQuoteError: "Unable to refresh the quote. Please try again.",
   },
   notifications: {
     title: "Notifications",
