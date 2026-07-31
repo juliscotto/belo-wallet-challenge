@@ -27,21 +27,8 @@ export function NotificationsScreen() {
 
   return (
     <SafeAreaView style={[tw`flex-1`, styles.screen]} edges={["top", "bottom"]}>
-      <View
-        style={tw`
-          flex-row
-          items-center
-          justify-between
-          px-5
-          py-4
-        `}
-      >
-        <View
-          style={tw`
-            flex-row
-            items-center
-          `}
-        >
+      <View style={tw`px-5 pb-4 pt-3`}>
+        <View style={tw`flex-row items-center`}>
           <Pressable
             style={tw`mr-3 p-1`}
             onPress={() => {
@@ -58,34 +45,37 @@ export function NotificationsScreen() {
             />
           </Pressable>
 
-          <Text style={[tw`text-2xl font-bold`, styles.primaryText]}>
+          <Text style={[tw`flex-1 text-2xl font-bold`, styles.primaryText]}>
             {t("notifications.title")}
           </Text>
         </View>
 
         {unreadCount > 0 && (
-          <Pressable onPress={markAllAsRead} accessibilityRole="button">
-            <Text
-              style={tw`
-                text-sm
-                font-semibold
-                text-blue-500
-              `}
+          <View style={tw`mt-3 items-end`}>
+            <Pressable
+              style={tw`rounded-lg px-2 py-2`}
+              onPress={markAllAsRead}
+              accessibilityRole="button"
+              accessibilityLabel={t("notifications.markAllAsRead")}
+              hitSlop={8}
             >
-              {t("notifications.markAllAsRead")}
-            </Text>
-          </Pressable>
+              <Text style={tw`text-sm font-semibold text-blue-500`}>
+                {t("notifications.markAllAsRead")}
+              </Text>
+            </Pressable>
+          </View>
         )}
       </View>
 
       <FlatList
         style={tw`flex-1`}
         contentContainerStyle={[
-          tw`px-5`,
+          tw`px-5 pb-6`,
           notifications.length === 0 && tw`flex-1`,
         ]}
         data={notifications}
         keyExtractor={(item) => item.id}
+        ItemSeparatorComponent={() => <View style={tw`h-3`} />}
         renderItem={({ item }) => (
           <NotificationRow
             notification={item}
@@ -113,28 +103,14 @@ export function NotificationsScreen() {
 
             <Text
               style={[
-                tw`
-                  mt-5
-                  text-center
-                  text-lg
-                  font-semibold
-                `,
+                tw`mt-5 text-center text-lg font-semibold`,
                 styles.primaryText,
               ]}
             >
               {t("notifications.emptyTitle")}
             </Text>
 
-            <Text
-              style={[
-                tw`
-                  mt-2
-                  text-center
-                  text-sm
-                `,
-                styles.secondaryText,
-              ]}
-            >
+            <Text style={[tw`mt-2 text-center text-sm`, styles.secondaryText]}>
               {t("notifications.emptyDescription")}
             </Text>
           </View>

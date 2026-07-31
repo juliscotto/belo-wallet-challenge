@@ -111,7 +111,12 @@ export function SwapScreen() {
   ]);
 
   const quote = useMemo(() => {
-    if (validationError !== null || !fromPrice || !toPrice) {
+    if (
+      !fromPrice ||
+      !toPrice ||
+      !Number.isFinite(fromAmount) ||
+      fromAmount <= 0
+    ) {
       return null;
     }
 
@@ -122,7 +127,7 @@ export function SwapScreen() {
       fromPriceUsd: fromPrice.priceUsd,
       toPriceUsd: toPrice.priceUsd,
     });
-  }, [fromAmount, fromPrice, fromSymbol, toPrice, toSymbol, validationError]);
+  }, [fromAmount, fromPrice, fromSymbol, toPrice, toSymbol]);
 
   function getValidationMessage(error: SwapValidationError): string {
     switch (error) {
@@ -330,16 +335,14 @@ export function SwapScreen() {
           <Pressable
             style={[
               tw`mt-8 items-center rounded-2xl p-4`,
-              validationError || pricesQuery.isError
-                ? tw`bg-neutral-400`
-                : tw`bg-blue-600`,
+              pricesQuery.isError ? tw`bg-neutral-400` : tw`bg-blue-600`,
             ]}
-            disabled={Boolean(validationError) || pricesQuery.isError}
+            disabled={pricesQuery.isError}
             onPress={handleContinue}
             accessibilityRole="button"
             accessibilityLabel={t("swap.continue")}
             accessibilityState={{
-              disabled: !quote,
+              disabled: pricesQuery.isError,
             }}
           >
             <Text style={tw`text-base font-semibold text-white`}>

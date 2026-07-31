@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import tw from "twrnc";
 
 import { formatUsd } from "../../../../core/formatting/formatCurrency";
@@ -136,7 +137,6 @@ export function SwapConfirmationScreen() {
         <View style={[tw`my-6 border-t`, styles.border]} />
 
         <Text style={[tw`text-sm`, styles.secondaryText]}>{t("swap.to")}</Text>
-
         <Text style={[tw`mt-2 text-2xl font-bold`, styles.primaryText]}>
           {quote.toAmount.toFixed(8)} {quote.toSymbol}
         </Text>

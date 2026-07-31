@@ -56,40 +56,41 @@ export function NotificationRow({
       style={[
         tw`
           flex-row
-          border-b
+          rounded-2xl
+          border
+          px-4
           py-4
         `,
         styles.border,
-        !notification.isRead && styles.surface,
+        styles.surface,
       ]}
       onPress={onPress}
       accessibilityRole="button"
+      accessibilityLabel={`${getTitle()}. ${getDescription()}`}
+      accessibilityState={{
+        selected: !notification.isRead,
+      }}
     >
       <View
         style={tw`
           mr-4
-          h-11
-          w-11
+          h-12
+          w-12
+          shrink-0
           items-center
           justify-center
           rounded-full
           bg-blue-600
         `}
       >
-        <Ionicons name="swap-horizontal" size={22} color="#ffffff" />
+        <Ionicons name="swap-horizontal" size={24} color="#ffffff" />
       </View>
 
       <View style={tw`flex-1`}>
-        <View
-          style={tw`
-            flex-row
-            items-start
-            justify-between
-          `}
-        >
+        <View style={tw`flex-row items-start`}>
           <Text
             style={[
-              tw`flex-1 text-base`,
+              tw`flex-1 pr-3 text-base`,
               notification.isRead
                 ? styles.primaryText
                 : [tw`font-bold`, styles.primaryText],
@@ -101,10 +102,9 @@ export function NotificationRow({
           {!notification.isRead && (
             <View
               style={tw`
-                ml-2
-                mt-1
-                h-2
-                w-2
+                mt-1.5
+                h-2.5
+                w-2.5
                 rounded-full
                 bg-blue-500
               `}
@@ -112,11 +112,11 @@ export function NotificationRow({
           )}
         </View>
 
-        <Text style={[tw`mt-1 text-sm`, styles.secondaryText]}>
+        <Text style={[tw`mt-1 text-sm leading-5`, styles.secondaryText]}>
           {getDescription()}
         </Text>
 
-        <Text style={[tw`mt-2 text-xs`, styles.secondaryText]}>
+        <Text style={[tw`mt-3 text-xs`, styles.secondaryText]}>
           {formattedDate}
         </Text>
       </View>
