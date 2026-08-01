@@ -1,13 +1,16 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Modal, Pressable, Text, View } from "react-native";
 import tw from "twrnc";
 
 import { triggerSelectionHaptic } from "../../../../core/haptics/haptics";
+import { useAppTheme } from "../../../../core/theme/useAppTheme";
 import { useThemeStyles } from "../../../../core/theme/useThemeStyles";
 import {
     AssetSymbol,
     SUPPORTED_ASSETS,
 } from "../../../market/domain/entities/Asset";
+import { AssetIcon } from "../../../market/presentation/components/AssetIcon";
 
 type AssetSelectorProps = {
   label: string;
@@ -27,10 +30,13 @@ export function AssetSelector({
   const [isVisible, setIsVisible] = useState(false);
 
   const { styles } = useThemeStyles();
+  const { isDark } = useAppTheme();
 
   const availableSymbols = ASSET_SYMBOLS.filter(
     (symbol) => symbol !== excludedSymbol,
   );
+
+  const iconColor = isDark ? "#ffffff" : "#171717";
 
   return (
     <>
@@ -38,7 +44,7 @@ export function AssetSelector({
 
       <Pressable
         style={[
-          tw`flex-row items-center justify-between rounded-2xl border p-4`,
+          tw`flex-row items-center rounded-2xl border p-4`,
           styles.surface,
           styles.border,
         ]}
@@ -48,17 +54,19 @@ export function AssetSelector({
         accessibilityRole="button"
         accessibilityLabel={`${label}: ${selectedSymbol}`}
       >
-        <View>
+        <AssetIcon symbol={selectedSymbol} size={40} />
+
+        <View style={tw`ml-3 flex-1`}>
           <Text style={[tw`text-lg font-semibold`, styles.primaryText]}>
             {selectedSymbol}
           </Text>
 
-          <Text style={[tw`mt-1 text-sm`, styles.secondaryText]}>
+          <Text style={[tw`mt-0.5 text-sm`, styles.secondaryText]}>
             {SUPPORTED_ASSETS[selectedSymbol].name}
           </Text>
         </View>
 
-        <Text style={[tw`text-lg`, styles.secondaryText]}>▾</Text>
+        <Ionicons name="chevron-down" size={20} color={iconColor} />
       </Pressable>
 
       <Modal
@@ -77,7 +85,7 @@ export function AssetSelector({
         >
           <Pressable
             style={[
-              tw`rounded-t-3xl p-5`,
+              tw`rounded-t-3xl px-5 pb-8 pt-5`,
               styles.screen,
               styles.elevatedSurface,
             ]}
@@ -85,53 +93,75 @@ export function AssetSelector({
               event.stopPropagation();
             }}
           >
-            <View style={tw`mb-5 flex-row items-center justify-between`}>
+            <View style={tw`mb-4 flex-row items-center justify-between`}>
               <Text style={[tw`text-xl font-bold`, styles.primaryText]}>
                 {label}
               </Text>
 
               <Pressable
+                style={tw`p-2`}
                 onPress={() => {
                   setIsVisible(false);
                 }}
                 accessibilityRole="button"
+                accessibilityLabel="Cerrar"
+                hitSlop={8}
               >
-                <Text style={[tw`text-base`, styles.secondaryText]}>✕</Text>
+                <Ionicons name="close" size={24} color={iconColor} />
               </Pressable>
             </View>
 
             {availableSymbols.map((symbol) => {
               const asset = SUPPORTED_ASSETS[symbol];
-
               const isSelected = symbol === selectedSymbol;
 
               return (
                 <Pressable
                   key={symbol}
                   style={[
-                    tw`flex-row items-center justify-between border-b py-4`,
-                    styles.border,
+                    tw`flex-row items-center rounded-2xl px-3 py-4`,
+                    isSelected && tw`bg-blue-500/10`,
                   ]}
                   onPress={() => {
                     void triggerSelectionHaptic();
                     onSelect(symbol);
                     setIsVisible(false);
                   }}
+                  accessibilityRole="radio"
+                  accessibilityState={{
+                    selected: isSelected,
+                  }}
                 >
-                  <View>
+                  <AssetIcon symbol={symbol} size={40} />
+
+                  <View style={tw`ml-3 flex-1`}>
                     <Text
-                      style={[tw`text-base font-semibold`, styles.primaryText]}
+                      style={[
+                        tw`text-base font-semibold`,
+                        isSelected ? tw`text-blue-500` : styles.primaryText,
+                      ]}
                     >
                       {symbol}
                     </Text>
 
-                    <Text style={[tw`mt-1 text-sm`, styles.secondaryText]}>
+                    <Text style={[tw`mt-0.5 text-sm`, styles.secondaryText]}>
                       {asset.name}
                     </Text>
                   </View>
 
                   {isSelected && (
-                    <Text style={tw`text-lg text-blue-500`}>✓</Text>
+                    <View
+                      style={tw`
+                        h-7
+                        w-7
+                        items-center
+                        justify-center
+                        rounded-full
+                        bg-blue-600
+                      `}
+                    >
+                      <Ionicons name="checkmark" size={18} color="#ffffff" />
+                    </View>
                   )}
                 </Pressable>
               );

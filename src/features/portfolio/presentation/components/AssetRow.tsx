@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 import tw from "twrnc";
+import { AssetIcon } from "../../../market/presentation/components/AssetIcon";
 
 import { useTranslation } from "react-i18next";
 import { formatUsd } from "../../../../core/formatting/formatCurrency";
@@ -63,14 +64,18 @@ export function AssetRow({
         });
       }}
     >
-      <View style={tw`flex-1`}>
-        <Text style={[tw`text-base font-semibold`, styles.primaryText]}>
-          {symbol}
-        </Text>
+      <View style={tw`flex-row items-center flex-1`}>
+        <AssetIcon symbol={symbol} size={42} />
 
-        <Text style={[tw`mt-1 text-sm`, styles.secondaryText]}>
-          {asset.name}
-        </Text>
+        <View style={tw`ml-3 flex-1`}>
+          <Text style={[tw`text-base font-semibold`, styles.primaryText]}>
+            {symbol}
+          </Text>
+
+          <Text style={[tw`mt-1 text-sm`, styles.secondaryText]}>
+            {asset.name}
+          </Text>
+        </View>
       </View>
 
       <View style={tw`items-end`}>

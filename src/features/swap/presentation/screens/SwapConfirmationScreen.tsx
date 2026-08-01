@@ -19,6 +19,7 @@ import { useNotificationStore } from "../../../notifications/store/notificationS
 
 import { usePortfolioStore } from "../../../portfolio/store/portfolioStore";
 
+import { AssetIcon } from "@/src/features/market/presentation/components/AssetIcon";
 import { createSwapQuote } from "../../domain/useCases/createSwapQuote";
 import {
     getSwapQuoteRemainingSeconds,
@@ -254,43 +255,38 @@ export function SwapConfirmationScreen() {
       </View>
 
       <View style={[tw`rounded-3xl p-6`, styles.surface]}>
-        <Text style={[tw`text-sm`, styles.secondaryText]}>
-          {t("swap.from")}
-        </Text>
+        <View style={tw`flex-row items-center`}>
+          <AssetIcon symbol={quote.fromSymbol} size={40} />
 
-        <Text
-          style={[
-            tw`
-              mt-2
-              text-2xl
-              font-bold
-            `,
-            styles.primaryText,
-          ]}
-        >
-          {quote.fromAmount} {quote.fromSymbol}
-        </Text>
+          <View style={tw`ml-3 flex-1`}>
+            <Text style={[tw`text-sm`, styles.secondaryText]}>
+              {t("swap.from")}
+            </Text>
 
-        <Text style={[tw`mt-2 text-sm`, styles.secondaryText]}>
-          {formatUsd(valueUsd)}
-        </Text>
+            <Text style={[tw`mt-1 text-xl font-bold`, styles.primaryText]}>
+              {quote.fromAmount} {quote.fromSymbol}
+            </Text>
+            <Text style={[tw`mt-2 text-sm`, styles.secondaryText]}>
+              {formatUsd(valueUsd)}
+            </Text>
+          </View>
+        </View>
 
         <View style={[tw`my-6 border-t`, styles.border]} />
 
-        <Text style={[tw`text-sm`, styles.secondaryText]}>{t("swap.to")}</Text>
+        <View style={tw`flex-row items-center`}>
+          <AssetIcon symbol={quote.toSymbol} size={40} />
 
-        <Text
-          style={[
-            tw`
-              mt-2
-              text-2xl
-              font-bold
-            `,
-            styles.primaryText,
-          ]}
-        >
-          {quote.toAmount.toFixed(8)} {quote.toSymbol}
-        </Text>
+          <View style={tw`ml-3 flex-1`}>
+            <Text style={[tw`text-sm`, styles.secondaryText]}>
+              {t("swap.to")}
+            </Text>
+
+            <Text style={[tw`mt-1 text-xl font-bold`, styles.primaryText]}>
+              {quote.toAmount.toFixed(8)} {quote.toSymbol}
+            </Text>
+          </View>
+        </View>
 
         <View style={[tw`my-6 border-t`, styles.border]} />
 

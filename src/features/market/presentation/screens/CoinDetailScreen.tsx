@@ -19,6 +19,7 @@ import {
 } from "../../../market/domain/entities/Asset";
 import { useAssetPrices } from "../../../market/presentation/hooks/useAssetPrices";
 import { usePortfolioStore } from "../../../portfolio/store/portfolioStore";
+import { AssetIcon } from "../components/AssetIcon";
 import { PriceHistoryChart } from "../components/PriceHistoryChart";
 import { usePriceHistory } from "../hooks/usePriceHistory";
 
@@ -74,7 +75,10 @@ export function CoinDetailScreen() {
 
   return (
     <SafeAreaView style={[tw`flex-1`, styles.screen]} edges={["top", "bottom"]}>
-      <ScrollView style={tw`flex-1 p-5`}>
+      <ScrollView
+        contentContainerStyle={tw`px-5 pt-5 pb-15`}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={tw`mb-6 flex-row items-center`}>
           <Pressable
             onPress={() => {
@@ -87,14 +91,18 @@ export function CoinDetailScreen() {
             <Text style={[tw`mr-4 text-3xl`, styles.primaryText]}>‹</Text>
           </Pressable>
 
-          <View>
-            <Text style={[tw`text-3xl font-bold`, styles.primaryText]}>
-              {asset.name}
-            </Text>
+          <View style={tw`flex-row items-center`}>
+            <AssetIcon symbol={asset.symbol} size={52} />
 
-            <Text style={[tw`mt-1 text-base`, styles.secondaryText]}>
-              {symbol}
-            </Text>
+            <View style={tw`ml-4`}>
+              <Text style={[tw`text-2xl font-bold`, styles.primaryText]}>
+                {asset.name}
+              </Text>
+
+              <Text style={[tw`mt-1 text-sm`, styles.secondaryText]}>
+                {asset.symbol}
+              </Text>
+            </View>
           </View>
         </View>
 

@@ -23,6 +23,7 @@ import {
 import { useAssetPrices } from "../../../market/presentation/hooks/useAssetPrices";
 import { usePortfolioStore } from "../../../portfolio/store/portfolioStore";
 
+import { AssetIcon } from "@/src/features/market/presentation/components/AssetIcon";
 import { triggerErrorHaptic } from "../../../../core/haptics/haptics";
 import { createSwapQuote } from "../../domain/useCases/createSwapQuote";
 import {
@@ -297,11 +298,15 @@ export function SwapScreen() {
               {t("swap.estimatedAmount")}
             </Text>
 
-            <Text style={[tw`mt-2 text-2xl font-bold`, styles.primaryText]}>
-              {quote
-                ? `${quote.toAmount.toFixed(8)} ${quote.toSymbol}`
-                : `— ${toSymbol}`}
-            </Text>
+            <View style={tw`mt-2 flex-row items-center`}>
+              <AssetIcon symbol={toSymbol} size={30} />
+
+              <Text style={[tw`ml-3 text-2xl font-bold`, styles.primaryText]}>
+                {quote
+                  ? `${quote.toAmount.toFixed(8)} ${quote.toSymbol}`
+                  : `— ${toSymbol}`}
+              </Text>
+            </View>
 
             {quote && (
               <>
